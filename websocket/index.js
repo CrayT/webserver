@@ -1,17 +1,43 @@
 
-const ServerAddr = 'ws://127.0.0.1:8080/demo/'
+const ServerAddr = 'ws://127.0.0.1:8080/demo/' // 结尾的斜杠不能省略
 
+class BaseClient {
+    constructor() {
 
-class Client{
+    }
+
     initialize() {
+        console.log('iii')
         if (this.websocket_?.readyState === window.WebSocket.OPEN) return;
         this.websocket_ = new window.WebSocket(ServerAddr);
         this.websocket_.binaryType = "arraybuffer";
         this.openTime = Date.now();
-        this.websocket_.onerror = this.onError;
-        this.websocket_.onmessage = this.onMessage;
+        this.websocket_.onerror = this.onError.bind(this); // 如果是class继承，需要用bind，箭头函数会出现子类中无法调用super关键字
+        this.websocket_.onmessage = this.onMessage.bind(this);
         this.websocket_.onopen = this.onOpen.bind(this);
-        this.websocket_.onclose = this.onClose;
+        this.websocket_.onclose = this.onClose.bind(this);
+    }
+
+    onOpen(e) {
+        console.log('base onOpen')
+    }
+
+    onClose(){
+
+    }
+
+    onMessage() {
+        
+    }
+    onError() {
+        
+    }
+    
+}
+class Client extends BaseClient{ //  
+
+    constructor() {
+        super()
     }
     onError(e){
         console.log('error', e)
@@ -25,7 +51,9 @@ class Client{
         }
         
     }
-    onOpen(e){
+    onOpen(e) {
+        console.log('first open',)
+        super.onOpen(e);
         console.log('open', e)
         console.time('testSend')
         const a = new ArrayBuffer(123456)
@@ -50,9 +78,10 @@ const client = new Client();
 
 console.log("-----opening----")
 
-client.initialize();
-window.client = client;
+try {
+    client.initialize();
+} catch(e) {
+    console.log(e)
+}
 
-// setInterval(() => {
-//     // testJsRun()
-// }, 150)    
+window.client = client;

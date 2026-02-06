@@ -1,5 +1,8 @@
+
 const socket = require('ws');
+
 const server = new socket.Server({ port: 8080, path: '/demo/' });
+
 server.on('connection', (socket) => {
     console.log('Client connected');
   
