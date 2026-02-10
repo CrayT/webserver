@@ -1,5 +1,5 @@
 
-const ServerAddr = 'ws://127.0.0.1:8080/demo/' // 结尾的斜杠不能省略
+const ServerAddr = 'ws://127.0.0.1:8082/demo/' // 结尾的斜杠不能省略
 
 class BaseClient {
     constructor() {

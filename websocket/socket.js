@@ -1,7 +1,11 @@
 
 const socket = require('ws');
 
-const server = new socket.Server({ port: 8080, path: '/demo/' });
+const server = new socket.Server({port: 8082, path: '/demo/',verifyClient: (info, callback) => {
+  // 鉴权：可以在此处检查请求头 (Cookie, Token)
+  // callback(true) 允许，callback(false) 拒绝
+  callback(true)
+}, });
 
 server.on('connection', (socket) => {
     console.log('Client connected');
